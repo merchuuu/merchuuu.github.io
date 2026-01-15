@@ -1,0 +1,854 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cumple Merchu 💖</title>
+  <meta name="theme-color" content="#ff5aa5" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@700&family=Playfair+Display:ital,wght@0,700;1,600&family=Comfortaa:wght@700&family=Great+Vibes&family=Montserrat:wght@800&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root{
+      --pink-1:#ffe6f2;
+      --pink-2:#ffc0dd;
+      --pink-3:#ff5aa5;
+      --pink-4:#d81b60;
+      --ink:#3b0a2a;
+      --shadow: 0 18px 55px rgba(216,27,96,.22);
+      --radius: 22px;
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 600px at 20% 10%, rgba(255,90,165,.35), transparent 60%),
+        radial-gradient(900px 500px at 85% 20%, rgba(255,192,221,.55), transparent 60%),
+        linear-gradient(180deg, var(--pink-1), #fff 45%, var(--pink-2));
+      overflow-x:hidden;
+    }
+
+    body::before{
+      content:"";
+      position:fixed; inset:0;
+      background-image: radial-gradient(rgba(255,90,165,.18) 1px, transparent 1px);
+      background-size: 18px 18px;
+      pointer-events:none;
+      opacity:.65;
+    }
+
+    /* Canvas para explosiones */
+    #fx{
+      position:fixed; inset:0;
+      pointer-events:none;
+      z-index: 60;
+    }
+
+    /* Emojis flotantes (texto/emoji) */
+    .floater{
+      position:fixed;
+      bottom:-30px;
+      pointer-events:none;
+      animation: rise linear forwards;
+      will-change: transform, opacity;
+      z-index: 10;
+    }
+    @keyframes rise{
+      to{
+        transform: translateY(-120vh) translateX(var(--x));
+        opacity:0;
+      }
+    }
+
+    /* ===========================
+       FOTOS CORAZÓN flotantes (ARRIBA DE TODO)
+       =========================== */
+    .heartPhoto{
+      position:fixed;
+      left: 50%;
+      bottom: -140px;
+      width: var(--sz);
+      height: var(--sz);
+      transform: translateX(-50%);
+      pointer-events:auto; /* si molestan los clics, cambia a none */
+      z-index: 12;        /* 🔥 por encima de la card y del contenido */
+      opacity: .92;
+      filter: drop-shadow(0 16px 28px rgba(59,10,42,.18));
+      animation: heartUp linear forwards;
+      will-change: transform, opacity;
+    }
+
+    /* forma corazón usando clip-path */
+    .heartPhoto .inner{
+      width:100%;
+      height:100%;
+      background-image: var(--img);
+      background-size: cover;
+      background-position: center;
+      border: 3px solid rgba(255,255,255,.9);
+      clip-path: path("M 50 15 C 38 -2 10 8 10 32 C 10 58 50 85 50 85 C 50 85 90 58 90 32 C 90 8 62 -2 50 15 Z");
+      border-radius: 22px; /* fallback suave */
+      background-color:#fff;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .heartPhoto .inner::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: radial-gradient(circle at 30% 20%, rgba(255,255,255,.40), transparent 55%);
+      pointer-events:none;
+    }
+
+    @keyframes heartUp{
+      0%{
+        transform: translateX(-50%) translateY(0) rotate(0deg);
+        opacity:0;
+      }
+      12%{ opacity:.95; }
+      100%{
+        transform: translateX(calc(-50% + var(--dx))) translateY(-125vh) rotate(var(--rot));
+        opacity:0;
+      }
+    }
+
+    /* Contenedor principal */
+    .wrap{
+      min-height:100%;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding: 22px 16px 70px;
+      position:relative;
+      z-index: 20; /* sobre fondos, pero debajo de heartPhoto */
+    }
+
+    .card{
+      width:min(720px, 100%);
+      background: linear-gradient(180deg, rgba(255,255,255,.88), rgba(255,255,255,.62));
+      border: 1px solid rgba(255,90,165,.22);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 22px 18px 18px;
+      backdrop-filter: blur(10px);
+      position:relative;
+      overflow:hidden;
+      opacity:0;
+      transform: translateY(10px);
+      animation: popIn .7s cubic-bezier(.2,.8,.2,1) forwards;
+    }
+    @keyframes popIn{ to{ opacity:1; transform: translateY(0);} }
+
+    header{
+      text-align:center;
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+      align-items:center;
+      padding: 6px 6px 8px;
+    }
+
+    /* Título letra por letra */
+    .title{
+      display:flex;
+      flex-wrap:wrap;
+      justify-content:center;
+      gap:4px;
+      margin: 0;
+      line-height:1;
+    }
+    .letter{
+      display:inline-block;
+      font-size: clamp(2rem, 7vw, 3rem);
+      animation: wave 2.4s ease-in-out infinite;
+      transform-origin: 50% 100%;
+      user-select:none;
+    }
+    @keyframes wave{
+      0%,100%{ transform: translateY(0) rotate(0deg); }
+      50%{ transform: translateY(-8px) rotate(-2deg); }
+    }
+    .s1{font-family:'Pacifico'; color:var(--pink-4)}
+    .s2{font-family:'Fredoka'; color:var(--pink-3)}
+    .s3{font-family:'Playfair Display'; color:#9b1047}
+    .s4{font-family:'Comfortaa'; color:var(--pink-3)}
+    .s5{font-family:'Great Vibes'; color:var(--pink-4)}
+    .s6{font-family:'Montserrat'; color:#7f0d3b}
+
+    .sub{
+      margin:0;
+      opacity:.95;
+      max-width: 62ch;
+      font-size: 1.02rem;
+      line-height: 1.35;
+    }
+
+    .divider{
+      height:1px;
+      width:100%;
+      background: linear-gradient(90deg, transparent, rgba(255,90,165,.35), transparent);
+      margin: 12px 0 14px;
+    }
+
+    .center{
+      display:flex;
+      justify-content:center;
+      padding: 8px 0 2px;
+      gap: 12px;
+      flex-wrap:wrap;
+    }
+
+    .btn{
+      appearance:none;
+      border:0;
+      cursor:pointer;
+      padding: 16px 22px;
+      border-radius: 999px;
+      font-weight: 900;
+      letter-spacing:.2px;
+      font-size: 1.05rem;
+      color:white;
+      background: linear-gradient(90deg, var(--pink-4), var(--pink-3));
+      box-shadow: 0 18px 42px rgba(216,27,96,.35);
+      transition: transform .15s ease, filter .15s ease;
+      min-width: 230px;
+      outline:none;
+    }
+
+    .controls{
+      margin-top: 10px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      flex-wrap:wrap;
+    }
+    .mini{
+      border: 1px solid rgba(216,27,96,.22);
+      background: rgba(255,255,255,.78);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 10px 14px;
+      font-weight: 900;
+      cursor:pointer;
+      min-width: 230px;
+      text-align:center;
+      transition: transform .15s ease, filter .15s ease;
+    }
+
+    .revealArea{
+      margin-top: 14px;
+      display:none;
+      animation: fadeUp .5s ease forwards;
+    }
+    @keyframes fadeUp{
+      from{ opacity:0; transform: translateY(10px); }
+      to{ opacity:1; transform: translateY(0); }
+    }
+
+    .msgCard{
+      border-radius: 22px;
+      background: rgba(255,255,255,.80);
+      border: 1px solid rgba(255,90,165,.22);
+      box-shadow: 0 20px 60px rgba(216,27,96,.14);
+      padding: 16px 14px 18px;
+      position:relative;
+      overflow:hidden;
+    }
+    .msgCard::before{
+      content:"";
+      position:absolute;
+      inset:0;
+      background: url("img/01.jpeg") center/cover no-repeat;
+      opacity:.16;
+      pointer-events:none;
+      transform: scale(1.03);
+    }
+    .msgCard > *{ position:relative; }
+
+    .msgTop{
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      letter-spacing: .5px;
+      color: rgba(255,90,165,.95);
+      font-size: clamp(1.1rem, 4.6vw, 1.35rem);
+      text-align:center;
+      margin: 4px 0 4px;
+    }
+    .msgAge{
+      font-family: "Playfair Display", serif;
+      font-weight: 700;
+      text-align:center;
+      font-size: clamp(2.4rem, 9vw, 3.1rem);
+      margin: 2px 0 10px;
+      color: #111;
+    }
+    .msgText{
+      font-family: "Cormorant Garamond", serif;
+      font-style: italic;
+      font-weight: 600;
+      font-size: clamp(1.05rem, 4.6vw, 1.32rem);
+      line-height: 1.42;
+      text-align:center;
+      margin: 0;
+      color: rgba(20,10,15,.92);
+      padding: 0 6px;
+    }
+
+    /* ===========================
+       JUEGO (responsive + padding seguro)
+       =========================== */
+    .gameOverlay{
+      position:fixed;
+      inset:0;
+      z-index: 80;
+      display:none;
+      align-items:center;
+      justify-content:center;
+      padding: max(12px, env(safe-area-inset-top)) max(12px, env(safe-area-inset-right))
+               max(12px, env(safe-area-inset-bottom)) max(12px, env(safe-area-inset-left));
+      background: rgba(59,10,42,.38);
+      backdrop-filter: blur(10px);
+    }
+    .gameOverlay.open{ display:flex; }
+
+    .gameBox{
+      width:min(760px, 100%);
+      height: min(92svh, 720px);
+      background: rgba(255,255,255,.90);
+      border-radius: 26px;
+      border: 1px solid rgba(255,90,165,.22);
+      box-shadow: 0 26px 80px rgba(0,0,0,.22);
+      overflow:hidden;
+      position:relative;
+      display:grid;
+      grid-template-rows: auto 1fr;
+      min-height: 520px;
+    }
+
+    .gameTop{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      padding: 14px 16px 12px; /* + aire */
+      background: linear-gradient(90deg, rgba(255,90,165,.12), rgba(255,192,221,.14));
+      gap:12px;
+    }
+
+    .gameTitle{
+      font-weight: 1000;
+      font-size: 1.02rem;
+      margin: 0 0 6px;
+    }
+
+    .gameStory{
+      margin:0;
+      opacity:.9;
+      font-size: .92rem;
+      line-height: 1.2;
+      max-width: 60ch;
+    }
+
+    .gameStatRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      align-items:center;
+      margin-top: 10px;
+    }
+    .gameStat, .gamePenalty{
+      font-weight: 1000;
+      font-size: .95rem;
+    }
+
+    .gameClose{
+      border:0;
+      background: rgba(255,255,255,.78);
+      border-radius: 999px;
+      width: 40px; height: 40px;
+      cursor:pointer;
+      font-size: 18px;
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    .arena{
+      position:relative;
+      width:100%;
+      height:100%;
+      overflow:hidden;
+      touch-action: manipulation;
+      padding: 16px; /* padding contra bordes */
+      background:
+        radial-gradient(900px 500px at 20% 20%, rgba(255,90,165,.18), transparent 60%),
+        radial-gradient(800px 500px at 80% 30%, rgba(255,192,221,.30), transparent 60%),
+        radial-gradient(700px 520px at 50% 85%, rgba(216,27,96,.10), transparent 62%),
+        linear-gradient(180deg, rgba(255,255,255,.65), rgba(255,230,242,.42));
+    }
+    .arena::before{
+      content:"";
+      position:absolute; inset:0;
+      background-image:
+        radial-gradient(rgba(255,90,165,.20) 1px, transparent 1px),
+        radial-gradient(rgba(255,192,221,.20) 1px, transparent 1px);
+      background-size: 18px 18px, 22px 22px;
+      background-position: 0 0, 10px 10px;
+      opacity:.55;
+      pointer-events:none;
+    }
+
+    .uni, .horse{
+      position:absolute;
+      user-select:none;
+      cursor:pointer;
+      transform: translate(-50%, -50%);
+      filter: drop-shadow(0 10px 18px rgba(0,0,0,.18));
+      will-change: transform;
+    }
+    .uni{ font-size: 42px; animation: uniFloat 1.15s ease-in-out infinite; }
+    .horse{ font-size: 40px; animation: horseWiggle 0.9s ease-in-out infinite; }
+
+    @keyframes uniFloat{
+      0%,100%{ transform: translate(-50%, -50%) translateY(0); }
+      50%{ transform: translate(-50%, -50%) translateY(-10px); }
+    }
+    @keyframes horseWiggle{
+      0%,100%{ transform: translate(-50%, -50%) rotate(-2deg) translateY(0); }
+      50%{ transform: translate(-50%, -50%) rotate(2deg) translateY(-6px); }
+    }
+
+    .winToast{
+      position:absolute;
+      inset:auto 12px 12px 12px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid rgba(216,27,96,.22);
+      border-radius: 18px;
+      padding: 12px 12px;
+      box-shadow: 0 18px 40px rgba(216,27,96,.18);
+      display:none;
+      text-align:center;
+      font-weight:1000;
+      line-height:1.25;
+      margin: 0 10px 10px;
+    }
+    .winToast.show{ display:block; }
+
+    .toastMini{
+      position:absolute;
+      top: 12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(255,255,255,.86);
+      border: 1px solid rgba(216,27,96,.22);
+      border-radius: 999px;
+      padding: 8px 12px;
+      box-shadow: 0 14px 28px rgba(216,27,96,.16);
+      font-weight: 1000;
+      opacity:0;
+      transition: opacity .15s ease;
+      pointer-events:none;
+      z-index: 2;
+    }
+    .toastMini.show{ opacity:1; }
+  </style>
+</head>
+
+<body>
+  <canvas id="fx"></canvas>
+
+  <div class="wrap">
+    <main class="card">
+      <header>
+        <h1 class="title" aria-label="Cumple Merchu">
+          <span class="letter s1" style="animation-delay:0ms">C</span>
+          <span class="letter s2" style="animation-delay:80ms">u</span>
+          <span class="letter s3" style="animation-delay:160ms">m</span>
+          <span class="letter s4" style="animation-delay:240ms">p</span>
+          <span class="letter s5" style="animation-delay:320ms">l</span>
+          <span class="letter s6" style="animation-delay:400ms">e</span>
+          <span style="width:10px"></span>
+          <span class="letter s2" style="animation-delay:480ms">M</span>
+          <span class="letter s3" style="animation-delay:560ms">e</span>
+          <span class="letter s5" style="animation-delay:640ms">r</span>
+          <span class="letter s1" style="animation-delay:720ms">c</span>
+          <span class="letter s4" style="animation-delay:800ms">h</span>
+          <span class="letter s6" style="animation-delay:880ms">u</span>
+        </h1>
+
+        <p class="sub">
+          Hoy celebro mis <strong>26</strong> 🌷
+          Un año para elegirme, animarme a lo nuevo, y cuidar lo que me hace bien.
+          Gracias por estar cerca 💖
+        </p>
+      </header>
+
+      <div class="divider" aria-hidden="true"></div>
+
+      <div class="center">
+        <button class="btn" id="surpriseBtn" type="button">¡Sorpresa!</button>
+      </div>
+
+      <div class="controls">
+        <button class="mini" id="unicornBtn" type="button">🦄 Más unicornios</button>
+        <button class="mini" id="gameBtn" type="button">🎂🦄 Juego: 26 Años</button>
+      </div>
+
+      <section class="revealArea" id="revealArea">
+        <div class="msgCard" role="note" aria-label="Mensaje de cumpleaños">
+          <div class="msgTop">Its my birthday</div>
+          <div class="msgAge">26</div>
+          <p class="msgText">
+            El jazmín me vuelve a mis veranos de niña.<br>
+            ustedes también.<br><br>
+            Este año, los deseos por mi quedan en sus manos<br>
+            gracias por acompañarme.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Juego -->
+  <div class="gameOverlay" id="gameOverlay" aria-hidden="true">
+    <div class="gameBox">
+      <div class="gameTop">
+        <div>
+          <div class="gameTitle">🎂🦄 Capturá mis 26 años</div>
+          <p class="gameStory">
+            Cada 🦄 suma 1 año. Si tocás 🐴 por error, restás 2.
+          </p>
+          <div class="gameStatRow">
+            <div class="gameStat" id="gameStat">🦄 Años: 0 / 26</div>
+            <div class="gamePenalty" id="gamePenalty">🐴 Penalizaciones: 0</div>
+          </div>
+        </div>
+        <button class="gameClose" id="gameClose" aria-label="Cerrar">✕</button>
+      </div>
+
+      <div class="arena" id="arena">
+        <div class="toastMini" id="toastMini">🐴 -2 años</div>
+        <div class="winToast" id="winToast">
+          🎉 ¡Lo lograste! Capturaste mis <strong>26 años</strong> 🦄💖<br>
+          Ahora sí: deseo con arcoíris 🌈✨
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // ===============================
+    // A) Emojis flotantes (texto/emoji)
+    // ===============================
+    function spawnFloater(forceUnicorn=false){
+      const el = document.createElement("div");
+      el.className = "floater";
+      const pool = forceUnicorn ? ["🦄"] : ["💖","💗","💕","💞","🦄","🌈","✨"];
+      el.textContent = pool[Math.floor(Math.random()*pool.length)];
+      el.style.left = (Math.random()*100) + "vw";
+      el.style.fontSize = (16 + Math.random()*22) + "px";
+      el.style.setProperty("--x", (Math.random()*160 - 80) + "px");
+      el.style.animationDuration = (4.2 + Math.random()*3.2) + "s";
+      el.style.opacity = 0.95;
+      document.body.appendChild(el);
+      setTimeout(() => el.remove(), 9000);
+    }
+    setInterval(() => spawnFloater(false), 650);
+
+    document.getElementById("unicornBtn").addEventListener("click", () => {
+      for(let i=0;i<18;i++){
+        setTimeout(() => spawnFloater(true), i*90);
+      }
+      if(navigator.vibrate) navigator.vibrate([20,30,20]);
+    });
+
+    // ===============================
+    // B) FOTOS CORAZÓN flotantes (9 fotos) ARRIBA DE TODO
+    // ===============================
+    const heartPhotos = [
+      "img/01.jpeg",
+      "img/02.jpeg",
+      "img/03.jpeg",
+      "img/04.jpeg",
+      "img/05.jpeg",
+      "img/06.jpeg",
+      "img/07.jpeg",
+      "img/08.jpeg",
+      "img/09.jpeg"
+    ];
+    let heartIndex = 0;
+
+    function spawnHeartPhoto(){
+      const src = heartPhotos[heartIndex % heartPhotos.length];
+      heartIndex++;
+
+      const wrap = document.createElement("div");
+      wrap.className = "heartPhoto";
+
+      const sz = 72 + Math.random() * 46;          // 72-118px
+      const dx = (Math.random()*240 - 120) + "px"; // -120..120px
+      const rot = (Math.random()*24 - 12) + "deg"; // -12..12deg
+      const dur = (6.6 + Math.random()*3.6) + "s"; // 6.6..10.2s
+      const left = (8 + Math.random()*84) + "vw";  // 8..92vw
+
+      wrap.style.setProperty("--sz", sz + "px");
+      wrap.style.setProperty("--dx", dx);
+      wrap.style.setProperty("--rot", rot);
+      wrap.style.setProperty("--img", `url("${src}")`);
+      wrap.style.left = left;
+      wrap.style.animationDuration = dur;
+
+      wrap.innerHTML = `<div class="inner" aria-label="Foto corazón"></div>`;
+
+      // click/tap: mini burst suave (no muy cargado)
+      wrap.addEventListener("click", (e) => {
+        e.stopPropagation();
+        burstEmoji(e.clientX, e.clientY, 16);
+      }, { passive:true });
+
+      document.body.appendChild(wrap);
+      setTimeout(() => wrap.remove(), 12000);
+    }
+
+    setInterval(spawnHeartPhoto, 1050);
+
+    // ===============================
+    // C) Explosión suave
+    // ===============================
+    const canvas = document.getElementById("fx");
+    const ctx = canvas.getContext("2d", { alpha:true });
+
+    function resize(){
+      const dpr = Math.max(1, window.devicePixelRatio || 1);
+      canvas.width = Math.floor(innerWidth * dpr);
+      canvas.height = Math.floor(innerHeight * dpr);
+      canvas.style.width = innerWidth + "px";
+      canvas.style.height = innerHeight + "px";
+      ctx.setTransform(dpr,0,0,dpr,0,0);
+    }
+    addEventListener("resize", resize);
+    resize();
+
+    const burstEmojis = ["💖","🦄","🌈","✨"];
+    let particles = [];
+    let raf = null;
+
+    function burstEmoji(x, y, count = 42){
+      for(let i=0;i<count;i++){
+        const angle = Math.random() * Math.PI * 2;
+        const speed = 2.0 + Math.random() * 4.0;
+        particles.push({
+          x, y,
+          vx: Math.cos(angle) * speed,
+          vy: Math.sin(angle) * speed - (1.3 + Math.random()*1.4),
+          g: 0.10 + Math.random()*0.06,
+          r: (Math.random()*Math.PI*2),
+          vr: (Math.random()-0.5)*0.18,
+          life: 0,
+          max: 90 + Math.floor(Math.random()*45),
+          emoji: burstEmojis[Math.floor(Math.random()*burstEmojis.length)],
+          size: 16 + Math.random()*14
+        });
+      }
+      if(!raf) animate();
+    }
+
+    function animate(){
+      raf = requestAnimationFrame(animate);
+      ctx.clearRect(0,0,innerWidth,innerHeight);
+
+      particles = particles.filter(p => p.life < p.max);
+
+      for(const p of particles){
+        p.life++;
+        p.vy += p.g;
+        p.x += p.vx;
+        p.y += p.vy;
+        p.r += p.vr;
+
+        const alpha = 1 - (p.life / p.max);
+        ctx.globalAlpha = Math.max(0, alpha);
+
+        ctx.save();
+        ctx.translate(p.x, p.y);
+        ctx.rotate(p.r);
+        ctx.font = `${p.size}px system-ui, "Apple Color Emoji","Segoe UI Emoji"`;
+        ctx.textAlign = "center";
+        ctx.textBaseline = "middle";
+        ctx.fillText(p.emoji, 0, 0);
+        ctx.restore();
+      }
+
+      ctx.globalAlpha = 1;
+
+      if(particles.length === 0){
+        cancelAnimationFrame(raf);
+        raf = null;
+      }
+    }
+
+    // Sorpresa: muestra el mensaje + burst (NO toca fotos corazón)
+    const surpriseBtn = document.getElementById("surpriseBtn");
+    const revealArea = document.getElementById("revealArea");
+    let revealed = false;
+
+    surpriseBtn.addEventListener("click", () => {
+      const r = surpriseBtn.getBoundingClientRect();
+      burstEmoji(r.left + r.width/2, r.top + r.height/2, 42);
+
+      if(!revealed){
+        revealArea.style.display = "block";
+        revealed = true;
+      }
+      if(navigator.vibrate) navigator.vibrate([18,28,18]);
+    });
+
+    // ===============================
+    // D) Juego: padding + penalización 🐴
+    // ===============================
+    const gameBtn = document.getElementById("gameBtn");
+    const gameOverlay = document.getElementById("gameOverlay");
+    const gameClose = document.getElementById("gameClose");
+    const arena = document.getElementById("arena");
+    const gameStat = document.getElementById("gameStat");
+    const gamePenalty = document.getElementById("gamePenalty");
+    const winToast = document.getElementById("winToast");
+    const toastMini = document.getElementById("toastMini");
+
+    let gameRunning = false;
+    let years = 0;
+    let penalties = 0;
+    let spawnTimer = null;
+
+    function openGame(){
+      gameOverlay.classList.add("open");
+      gameOverlay.setAttribute("aria-hidden","false");
+      startGame();
+    }
+
+    function closeGame(){
+      gameOverlay.classList.remove("open");
+      gameOverlay.setAttribute("aria-hidden","true");
+      stopGame();
+    }
+
+    function startGame(){
+      stopGame();
+      gameRunning = true;
+      years = 0;
+      penalties = 0;
+      winToast.classList.remove("show");
+      hideToastMini();
+      arena.querySelectorAll(".uni,.horse").forEach(n => n.remove());
+      updateHUD();
+      spawnTimer = setInterval(spawnThing, 480);
+    }
+
+    function stopGame(){
+      gameRunning = false;
+      if(spawnTimer) clearInterval(spawnTimer);
+      spawnTimer = null;
+    }
+
+    function updateHUD(){
+      gameStat.textContent = `🦄 Años: ${years} / 26`;
+      gamePenalty.textContent = `🐴 Penalizaciones: ${penalties}`;
+    }
+
+    function burstAtArena(x, y, count){
+      const ar = arena.getBoundingClientRect();
+      burstEmoji(ar.left + x, ar.top + y, count);
+    }
+
+    function showToastMini(text){
+      toastMini.textContent = text;
+      toastMini.classList.add("show");
+      clearTimeout(showToastMini._t);
+      showToastMini._t = setTimeout(hideToastMini, 650);
+    }
+    function hideToastMini(){
+      toastMini.classList.remove("show");
+    }
+
+    function spawnThing(){
+      if(!gameRunning) return;
+      if(years >= 26) return;
+
+      const rect = arena.getBoundingClientRect();
+      const pad = 16;
+      const x = pad + 22 + Math.random() * (rect.width - (pad*2 + 44));
+      const y = pad + 48 + Math.random() * (rect.height - (pad*2 + 110));
+
+      const isHorse = Math.random() < 0.28;
+      const el = document.createElement("div");
+      el.className = isHorse ? "horse" : "uni";
+      el.textContent = isHorse ? "🐴" : "🦄";
+      el.style.left = x + "px";
+      el.style.top = y + "px";
+
+      const ttl = isHorse
+        ? (420 + Math.random()*380)
+        : (480 + Math.random()*520);
+
+      const drift = (Math.random() < 0.5 ? -1 : 1) * (14 + Math.random()*22);
+      el.animate(
+        [
+          { transform: "translate(-50%, -50%) translateX(0px)" },
+          { transform: `translate(-50%, -50%) translateX(${drift}px)` }
+        ],
+        { duration: ttl, easing: "ease-out", fill: "forwards" }
+      );
+
+      const removeLater = setTimeout(() => {
+        if(el.isConnected) el.remove();
+      }, ttl);
+
+      const onTap = (e) => {
+        e.preventDefault();
+        clearTimeout(removeLater);
+
+        if(isHorse){
+          penalties++;
+          years = Math.max(0, years - 2);
+          showToastMini("🐴 -2 años");
+          burstAtArena(x, y, 10);
+          if(navigator.vibrate) navigator.vibrate([20,40,20]);
+        } else {
+          years++;
+          burstAtArena(x, y, 12);
+          if(navigator.vibrate) navigator.vibrate(12);
+        }
+
+        el.remove();
+        updateHUD();
+
+        if(years >= 26){
+          winToast.classList.add("show");
+          burstEmoji(innerWidth/2, innerHeight*0.25, 55);
+          stopGame();
+        }
+      };
+
+      el.addEventListener("click", onTap);
+      el.addEventListener("touchstart", onTap, {passive:false});
+      arena.appendChild(el);
+
+      const items = arena.querySelectorAll(".uni,.horse");
+      if(items.length > 12){
+        for(let i=0;i<3;i++){
+          if(items[i]) items[i].remove();
+        }
+      }
+    }
+
+    gameBtn.addEventListener("click", openGame);
+    gameClose.addEventListener("click", closeGame);
+    gameOverlay.addEventListener("click", (e)=>{ if(e.target === gameOverlay) closeGame(); });
+  </script>
+</body>
+</html>
