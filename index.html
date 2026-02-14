@@ -2,270 +2,640 @@
 <html lang="es">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cumple Merchu 💖</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Fredoka:wght@700&family=Playfair+Display:ital,wght@0,700;1,600&family=Comfortaa:wght@700&family=Great+Vibes&family=Montserrat:wght@800&family=Cormorant+Garamond:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>San Valentín</title>
 
   <style>
     :root{
-      --pink-1:#ffe6f2;
-      --pink-2:#ffc0dd;
-      --pink-3:#ff5aa5;
-      --pink-4:#d81b60;
-      --ink:#3b0a2a;
+      --bg1:#07060f;
+      --bg2:#1b0f2a;
+
+      --paper:#fff7fb;
+      --paper2:#fff0f8;
+      --ink:#1d0c1d;
+      --muted:#5b3f56;
+      --line:rgba(29,12,29,.12);
+
+      --pink:#ff4d8d;
+      --pink2:#ff7ab6;
+      --purple:#7c4dff;
+
+      --shadow:0 18px 70px rgba(0,0,0,.40);
+      --radius:22px;
+      --radius2:30px;
+
+      --font: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
     }
 
-    *{ box-sizing:border-box; }
+    *{box-sizing:border-box}
+    html,body{height:100%}
     body{
       margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto;
+      font-family:var(--font);
+      color:rgba(255,255,255,.92);
       background:
-        radial-gradient(1200px 600px at 20% 10%, rgba(255,90,165,.35), transparent 60%),
-        linear-gradient(180deg, var(--pink-1), #fff 45%, var(--pink-2));
+        radial-gradient(900px 700px at 18% 10%, rgba(255,77,141,.22), transparent 60%),
+        radial-gradient(900px 700px at 85% 25%, rgba(124,77,255,.16), transparent 60%),
+        radial-gradient(700px 500px at 50% 95%, rgba(255,122,182,.14), transparent 60%),
+        linear-gradient(160deg, var(--bg1), var(--bg2));
       overflow-x:hidden;
-      color:var(--ink);
     }
 
-    /* Emojis flotantes */
-    .floater{
-      position:fixed;
-      bottom:-30px;
-      pointer-events:none;
-      animation: rise linear forwards;
-      z-index:10;
+    .wrap{max-width:980px;margin:0 auto;padding:20px 14px 40px}
+    .top{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      margin-bottom:14px;
     }
-    @keyframes rise{
-      to{
-        transform: translateY(-120vh) translateX(var(--x));
-        opacity:0;
-      }
-    }
-
-    /* Fotos corazón */
-    .heartPhoto{
-      position:fixed;
-      bottom:-140px;
-      left:50%;
-      width:var(--sz);
-      height:var(--sz);
-      transform:translateX(-50%);
-      z-index:12;
-      animation: heartUp linear forwards;
-      filter: drop-shadow(0 16px 28px rgba(0,0,0,.2));
-    }
-    .heartPhoto .inner{
-      width:100%;
-      height:100%;
-      background-image:var(--img);
-      background-size:cover;
-      background-position:center;
-      border:3px solid white;
-      clip-path: path("M 50 15 C 38 -2 10 8 10 32 C 10 58 50 85 50 85 C 50 85 90 58 90 32 C 90 8 62 -2 50 15 Z");
-    }
-    @keyframes heartUp{
-      to{
-        transform: translateX(calc(-50% + var(--dx))) translateY(-120vh) rotate(var(--rot));
-        opacity:0;
-      }
-    }
-
-    .wrap{
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      padding:20px;
-      z-index:20;
-      position:relative;
-    }
-
-    .card{
-      background: rgba(255,255,255,.85);
+    .pill{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:8px 12px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.16);
+      background:rgba(255,255,255,.07);
       backdrop-filter: blur(10px);
-      border-radius:22px;
-      padding:22px;
-      max-width:720px;
-      width:100%;
-      box-shadow:0 18px 55px rgba(216,27,96,.22);
-      text-align:center;
+      color:rgba(255,255,255,.82);
+      font-size:13px;
+      max-width:100%;
+      overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
     }
-
-    /* Título */
-    .title{
-      display:flex;
-      flex-wrap:wrap;
-      justify-content:center;
-      gap:4px;
-    }
-    .letter{
-      font-size:clamp(2rem,7vw,3rem);
-      animation: wave 2.5s infinite;
-    }
-    @keyframes wave{
-      50%{ transform: translateY(-8px); }
-    }
-    .s1{font-family:'Pacifico';color:var(--pink-4)}
-    .s2{font-family:'Fredoka';color:var(--pink-3)}
-    .s3{font-family:'Playfair Display';color:#9b1047}
-    .s4{font-family:'Comfortaa';color:var(--pink-3)}
-    .s5{font-family:'Great Vibes';color:var(--pink-4)}
-    .s6{font-family:'Montserrat';color:#7f0d3b}
-
-    .sub{
-      margin:12px auto;
-      max-width:60ch;
-    }
-
-    /* Botón */
-    .btn{
-      margin-top:18px;
-      padding:16px 26px;
-      font-size:1.1rem;
-      font-weight:900;
-      border:none;
-      border-radius:999px;
+    .miniBtns{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    button{
+      border:1px solid rgba(255,255,255,.18);
+      background:rgba(255,255,255,.08);
+      color:rgba(255,255,255,.92);
+      padding:10px 12px;
+      border-radius:14px;
       cursor:pointer;
-      color:white;
-      background: linear-gradient(90deg, var(--pink-4), var(--pink-3));
-      box-shadow:0 0 20px rgba(255,90,165,.6);
+      font-weight:800;
+      letter-spacing:.2px;
+      transition:transform .08s ease, filter .12s ease;
+      backdrop-filter: blur(10px);
+    }
+    button:active{transform:translateY(1px)}
+    button:hover{filter:brightness(1.05)}
+    .primary{
+      background:linear-gradient(180deg, rgba(255,77,141,.25), rgba(255,77,141,.12));
+    }
+
+    .book{
+      border-radius:var(--radius2);
+      box-shadow:var(--shadow);
       position:relative;
       overflow:hidden;
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(0,0,0,.15);
+      backdrop-filter: blur(10px);
     }
-    .btn::after{
-      content:"✨";
-      position:absolute;
-      inset:0;
-      animation: sparkle 1.5s infinite;
+    .bookTopGlow{
+      position:absolute; inset:-2px;
+      background:
+        radial-gradient(520px 240px at 12% 18%, rgba(255,77,141,.22), transparent 64%),
+        radial-gradient(520px 240px at 88% 10%, rgba(124,77,255,.16), transparent 64%),
+        radial-gradient(420px 240px at 55% 85%, rgba(255,122,182,.14), transparent 64%);
       pointer-events:none;
-      opacity:.8;
-    }
-    @keyframes sparkle{
-      0%{ transform:translateX(-100%); opacity:0; }
-      50%{ opacity:1; }
-      100%{ transform:translateX(100%); opacity:0; }
     }
 
-    .revealArea{
-      display:none;
-      margin-top:18px;
-    }
-
-    .msgCard{
+    .page{
       position:relative;
-      background:rgba(255,255,255,.85);
-      border-radius:22px;
+      background:linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.06));
+      padding:16px;
+      min-height: 72vh;
+    }
+
+    .paper{
+      background:linear-gradient(180deg, var(--paper), var(--paper2));
+      color:var(--ink);
+      border:1px solid var(--line);
+      border-radius:var(--radius);
       padding:18px;
+      box-shadow: 0 12px 35px rgba(0,0,0,.20);
+      position:relative;
       overflow:hidden;
     }
-
-    /* 🔥 FONDO RESTAURADO */
-    .msgCard::before{
+    .paper:after{
       content:"";
       position:absolute;
-      inset:0;
-      background: url("img/01.jpeg") center/cover no-repeat;
-      opacity:.16;
+      right:-60px; bottom:-60px;
+      width:140px; height:140px;
+      background: radial-gradient(circle at 30% 30%, rgba(255,255,255,.9), rgba(255,255,255,0) 60%);
+      transform: rotate(10deg);
+      opacity:.45;
       pointer-events:none;
-      transform: scale(1.03);
     }
-    .msgCard > *{ position:relative; }
 
-    .msgTop{
-      font-family:"Cormorant Garamond",serif;
-      font-style:italic;
-      color:var(--pink-3);
+    .title{
+      margin:0 0 8px;
+      font-size:22px;
+      letter-spacing:-.3px;
+      line-height:1.2;
     }
-    .msgAge{
-      font-size:3rem;
-      font-family:"Playfair Display",serif;
+    .subtitle{
+      margin:0 0 14px;
+      color:var(--muted);
+      line-height:1.55;
+      font-size:14px;
     }
-    .msgText{
-      font-family:"Cormorant Garamond",serif;
-      font-style:italic;
-      font-size:1.2rem;
-      line-height:1.4;
+    .divider{
+      height:1px;
+      background:rgba(29,12,29,.12);
+      margin:14px 0;
     }
+
+    .twoCols{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:12px;
+      margin-top:12px;
+    }
+    @media (max-width:860px){
+      .twoCols{grid-template-columns:1fr}
+      .page{min-height: 78vh}
+      .paper{padding:16px}
+      .title{font-size:21px}
+    }
+
+    .frame{
+      border-radius:18px;
+      border:1px solid rgba(29,12,29,.14);
+      overflow:hidden;
+      background:#eee;
+    }
+    .img{
+      display:block;
+      width:100%;
+      height:220px;
+      object-fit:cover;
+    }
+    @media (max-width:480px){
+      .img{height:210px}
+    }
+
+    .tag{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;
+      border-radius:999px;
+      border:1px solid rgba(29,12,29,.14);
+      background:rgba(255,255,255,.7);
+      color:rgba(29,12,29,.78);
+      font-size:12px;
+      font-weight:800;
+    }
+
+    .valentineNote{
+      margin-top:12px;
+      padding:12px 12px;
+      border-radius:16px;
+      border:1px dashed rgba(255,77,141,.35);
+      background: rgba(255,77,141,.07);
+      color:rgba(29,12,29,.75);
+      font-size:13px;
+      line-height:1.55;
+    }
+
+    .nav{
+      display:flex;
+      gap:10px;
+      justify-content:space-between;
+      align-items:center;
+      margin-top:12px;
+    }
+    .nav button{flex:1;min-width:0}
+
+    .progress{
+      display:flex;
+      gap:8px;
+      justify-content:center;
+      align-items:center;
+      margin-top:12px;
+      padding-bottom:2px;
+    }
+    .dot{
+      width:10px;height:10px;border-radius:999px;
+      border:1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.10);
+    }
+    .dot.on{
+      background: rgba(255,77,141,.75);
+      border-color: rgba(255,77,141,.75);
+      box-shadow: 0 0 0 6px rgba(255,77,141,.12);
+    }
+    .swipeHint{
+      margin-top:10px;
+      display:flex;
+      justify-content:center;
+      color:rgba(255,255,255,.78);
+      font-size:12px;
+      gap:8px;
+      user-select:none;
+    }
+
+    .map{
+      position:relative;
+      width:100%;
+      padding-top:62%;
+      border-radius:18px;
+      overflow:hidden;
+      border:1px solid rgba(29,12,29,.14);
+      background:#eee;
+    }
+    .map iframe{
+      position:absolute; inset:0;
+      width:100%; height:100%;
+      border:0;
+    }
+    .link{
+      display:inline-flex;gap:8px;align-items:center;
+      padding:9px 10px;border-radius:14px;
+      border:1px solid rgba(29,12,29,.14);
+      background:rgba(255,255,255,.76);
+      color:rgba(29,12,29,.84);
+      text-decoration:none;
+      font-weight:900;
+      font-size:13px;
+    }
+
+    .pass{
+      border:1px solid rgba(29,12,29,.14);
+      border-radius:18px;
+      background: rgba(255,255,255,.75);
+      color: rgba(29,12,29,.88);
+      padding:12px;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+    }
+    .passTop{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:10px}
+    .passTop strong{font-size:13px;letter-spacing:.5px}
+    .passGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+    @media (max-width:860px){ .passGrid{grid-template-columns:1fr} }
+    .kv{border:1px solid rgba(29,12,29,.12);border-radius:14px;background:rgba(255,255,255,.7);padding:10px}
+    .kv span{display:block;color:rgba(29,12,29,.55);font-size:12px}
+    .kv b{display:block;margin-top:3px;font-size:14px}
+
+    .pageFlip{
+      animation: flip .35s ease;
+      transform-origin:left center;
+    }
+    @keyframes flip{
+      from{transform: perspective(900px) rotateY(-10deg); opacity:.6}
+      to{transform: perspective(900px) rotateY(0deg); opacity:1}
+    }
+
+    .safePad{padding-bottom: env(safe-area-inset-bottom, 0px);}
   </style>
 </head>
 
 <body>
-
-<div class="wrap">
-  <div class="card">
-    <div class="title">
-      <span class="letter s1">C</span><span class="letter s2">u</span><span class="letter s3">m</span><span class="letter s4">p</span><span class="letter s5">l</span><span class="letter s6">e</span>
-      <span style="width:10px"></span>
-      <span class="letter s2">M</span><span class="letter s3">e</span><span class="letter s5">r</span><span class="letter s1">c</span><span class="letter s4">h</span><span class="letter s6">u</span>
-    </div>
-
-    <p class="sub">
-      Hoy celebro mis <strong>26</strong> 🌷  
-      Un año para elegirme, animarme a lo nuevo y agradecer.
-    </p>
-
-    <button class="btn" id="surpriseBtn">🎂 ¡Sorpresa!</button>
-
-    <div class="revealArea" id="revealArea">
-      <div class="msgCard">
-        <div class="msgTop">Its my birthday</div>
-        <div class="msgAge">26</div>
-        <p class="msgText">
-          El jazmín me vuelve a mis veranos de niña,<br>
-          ustedes también.<br><br>
-          Este año, los deseos por mi quedan en sus manos<br>
-          gracias por acompañarme.
-        </p>
+  <div class="wrap safePad">
+    <div class="top">
+      <div class="pill">💘 San Valentín</div>
+      <div class="miniBtns">
+        <button class="primary" id="btnStart">Empezar</button>
+        <button id="btnReset">Reiniciar</button>
       </div>
     </div>
+
+    <section class="book" id="book" aria-label="Libro de pistas">
+      <div class="bookTopGlow" aria-hidden="true"></div>
+      <div class="page" id="page"></div>
+    </section>
+
+    <div class="progress" aria-label="Progreso">
+      <div class="dot on" id="dot0"></div>
+      <div class="dot" id="dot1"></div>
+      <div class="dot" id="dot2"></div>
+      <div class="dot" id="dot3"></div>
+    </div>
+
+    <div class="swipeHint">👈 Deslizá para pasar página • 👉</div>
   </div>
-</div>
 
-<script>
-  /* Emojis flotantes */
-  setInterval(()=>{
-    const e=document.createElement("div");
-    e.className="floater";
-    e.textContent=["💖","🦄","🌈","✨"][Math.floor(Math.random()*4)];
-    e.style.left=Math.random()*100+"vw";
-    e.style.fontSize=16+Math.random()*20+"px";
-    e.style.setProperty("--x",(Math.random()*160-80)+"px");
-    e.style.animationDuration=(4+Math.random()*3)+"s";
-    document.body.appendChild(e);
-    setTimeout(()=>e.remove(),9000);
-  },650);
+  <script>
+    const PERSIST_PROGRESS = true;
 
-  /* Fotos corazón */
-  const photos=[1,2,3,4,5,6,7,8,9];
-  let i=0;
-  setInterval(()=>{
-    const d=document.createElement("div");
-    d.className="heartPhoto";
-    d.style.setProperty("--img",`url("img/0${photos[i%9]}.jpeg")`);
-    d.style.setProperty("--sz",(70+Math.random()*40)+"px");
-    d.style.setProperty("--dx",(Math.random()*200-100)+"px");
-    d.style.setProperty("--rot",(Math.random()*20-10)+"deg");
-    d.style.left=(10+Math.random()*80)+"vw";
-    d.style.animationDuration=(6+Math.random()*4)+"s";
-    d.innerHTML=`<div class="inner"></div>`;
-    document.body.appendChild(d);
-    setTimeout(()=>d.remove(),12000);
-    i++;
-  },1100);
+    // Paso 1: Rafting carousel
+    const RAFTING_IMAGES = [
+      "https://backstrapi.latitur.com/uploads/copy_old_1755567853887_e99a61fa_7fe4_41ca_8df9_c82529e0a7b5_e18a004e72.webp",
+      "https://www.argentinacabanas.com/sanrafael/fotos/raftingrioatuel/12.jpg",
+      "https://www.saintjosephweb.com.ar/pics/actividad/large/8068485.jpg"
+    ];
 
-  /* Botón sorpresa */
-  const btn=document.getElementById("surpriseBtn");
-  const reveal=document.getElementById("revealArea");
-  let shown=false;
-  btn.onclick=()=>{
-    if(!shown){
-      reveal.style.display="block";
-      shown=true;
+    // Paso 1: Relax carousel (Cacheuta)
+    const RELAX_IMAGES = [
+      "https://kahuak.com.ar/wp-content/uploads/2024/08/Mendoza_Set_2018_04_-60.webp",
+      "https://termascacheuta.com/wp-content/uploads/2022/07/TermaSpa-TermasCacheuta.jpg",
+      "https://www.tangol.com/Fotos/Tours/termas-de-cacheuta_874_202406281649021.Mobile.JPG"
+    ];
+
+    // Paso 2: Hospedaje foto
+    const HOTEL_IMAGE =
+      "https://q-xx.bstatic.com/xdata/images/hotel/840x460/29585540.jpg?k=c9d280161bd3b5ed8d30a06a7fc260afc3202a2e8a4874edcfcd371a28355f98&o=";
+
+    const INTERVAL_MS = 3200;
+
+    const els = {
+      page: document.getElementById("page"),
+      btnStart: document.getElementById("btnStart"),
+      btnReset: document.getElementById("btnReset"),
+      book: document.getElementById("book"),
+      dots: [
+        document.getElementById("dot0"),
+        document.getElementById("dot1"),
+        document.getElementById("dot2"),
+        document.getElementById("dot3"),
+      ],
+    };
+
+    function setState(key, value){
+      if (!PERSIST_PROGRESS) return;
+      localStorage.setItem(key, String(value));
     }
-  };
-</script>
+    function getState(key, fallback){
+      if (!PERSIST_PROGRESS) return fallback;
+      const v = localStorage.getItem(key);
+      return (v === null) ? fallback : Number(v);
+    }
 
+    // 0 = carta, 1 = paso1, 2 = paso2, 3 = paso3
+    let currentPage = getState("sv_page", 0);
+    let unlockedPage = getState("sv_unlocked", 0);
+
+    let timers = [];
+    function clearTimers(){
+      timers.forEach(t => clearInterval(t));
+      timers = [];
+    }
+
+    function startCarousel(imgId, images){
+      const imgEl = document.getElementById(imgId);
+      if (!imgEl) return;
+      let i = 0;
+      images.forEach(u => { const im = new Image(); im.src = u; });
+      const t = setInterval(()=>{
+        i = (i + 1) % images.length;
+        imgEl.src = images[i];
+      }, INTERVAL_MS);
+      timers.push(t);
+    }
+
+    function setDots(pageIndex){
+      els.dots.forEach((d, i)=> d.classList.toggle("on", i === pageIndex));
+    }
+
+    function clamp(n, a, b){ return Math.max(a, Math.min(b, n)); }
+
+    function unlockUpTo(pageIndex){
+      unlockedPage = Math.max(unlockedPage, pageIndex);
+      setState("sv_unlocked", unlockedPage);
+    }
+
+    function goTo(pageIndex, opts={animate:true}){
+      clearTimers();
+      pageIndex = clamp(pageIndex, 0, 3);
+
+      if (pageIndex > unlockedPage) pageIndex = unlockedPage;
+
+      currentPage = pageIndex;
+      setState("sv_page", currentPage);
+
+      render(pageIndex, opts.animate);
+      setDots(pageIndex);
+    }
+
+    function next(){
+      const target = clamp(currentPage + 1, 0, 3);
+      unlockUpTo(target);
+      goTo(target);
+    }
+    function prev(){
+      goTo(clamp(currentPage - 1, 0, 3));
+    }
+
+    function render(pageIndex, animate=true){
+      const flipClass = animate ? "pageFlip" : "";
+      const commonNav = (leftText="Atrás", rightText="Siguiente", canLeft=true, canRight=true) => `
+        <div class="nav">
+          <button id="btnPrev" ${canLeft ? "" : "disabled"}>${leftText}</button>
+          <button class="primary" id="btnNext" ${canRight ? "" : "disabled"}>${rightText}</button>
+        </div>
+      `;
+
+      let html = "";
+
+      if (pageIndex === 0){
+        html = `
+          <div class="paper ${flipClass}">
+            <div class="tag">💌 Carta</div>
+            <h2 class="title" style="margin-top:10px;">Tengo una sorpresa para vos 💖</h2>
+            <p class="subtitle">
+              Esta vez no quise regalar algo: quise <b>regalarnos un plan</b>.
+              <br/>Algo que ya sabemos que nos hace bien.
+              <br/>Andá pasando página… lo demás se revela solo 💘
+            </p>
+
+            <div class="divider"></div>
+
+            <div class="valentineNote">
+              Solo seguí página por página.
+            </div>
+
+            ${commonNav("—", "Abrir la primera página", false, true)}
+          </div>
+        `;
+      }
+
+      if (pageIndex === 1){
+        html = `
+          <div class="paper ${flipClass}">
+            <div class="tag">🛶 Paso 1 • Aventura + Relax</div>
+            <h2 class="title" style="margin-top:10px;">Adrenalina + Relax</h2>
+            <p class="subtitle">
+              Lo primero... <b>rafting</b> por el canal y después relajación en <b>Hotel Spa Cacheuta</b>.
+            </p>
+
+            <div class="twoCols">
+              <div>
+                <div class="tag">🛶 Rafting</div>
+                <div class="frame" style="margin-top:10px;">
+                  <img class="img" id="raftingCarousel" src="${RAFTING_IMAGES[0]}" alt="Rafting">
+                </div>
+                <p class="subtitle" style="margin-top:10px;">Para ir entrando en el mood 😌</p>
+              </div>
+
+              <div>
+                <div class="tag">💆 Relax — Spa Cacheuta</div>
+                <div class="frame" style="margin-top:10px;">
+                  <img class="img" id="relaxCarousel" src="${RELAX_IMAGES[0]}" alt="Relax Cacheuta">
+                </div>
+                <p class="subtitle" style="margin-top:10px;">
+                  Vibes: termas, calma y desconexión 💗
+                </p>
+              </div>
+            </div>
+
+            ${commonNav("Volver a la carta", "Destrabar alojamiento", true, true)}
+          </div>
+        `;
+      }
+
+      if (pageIndex === 2){
+        html = `
+          <div class="paper ${flipClass}">
+            <div class="tag">🏡 Paso 2 • Alojamiento</div>
+            <h2 class="title" style="margin-top:10px;">Nuestro refugio en Mendoza 💖</h2>
+            <p class="subtitle">
+              Hotel: <b>Puerta del Sol</b>
+              <br/>Entrada: <b>jue, 12 mar 2026</b> (desde 12:00) • Salida: <b>dom, 15 mar 2026</b> (10:00 a 10:30)
+            </p>
+
+            <div class="twoCols">
+              <div>
+                <div class="tag">📸 Foto del hotel</div>
+                <div class="frame" style="margin-top:10px;">
+                  <img class="img" src="${HOTEL_IMAGE}" alt="Hotel Puerta del Sol">
+                </div>
+                <p class="subtitle" style="margin-top:10px;">Un lugar lindo para estar tranquilos 😌</p>
+              </div>
+
+              <div>
+                <div class="tag">🗺️ Mapa</div>
+                <div class="map" style="margin-top:10px;">
+                  <iframe
+                    src="https://www.google.com/maps?q=Garibaldi%2082,%205500%20Mendoza,%20Argentina&output=embed"
+                    loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Mapa Hotel Puerta del Sol"></iframe>
+                </div>
+                <div style="margin-top:10px;">
+                  <a class="link" target="_blank" rel="noopener"
+                    href="https://www.google.com/maps/search/?api=1&query=Garibaldi%2082%2C%205500%20Mendoza%2C%20Argentina">📍 Abrir en Google Maps</a>
+                </div>
+              </div>
+            </div>
+
+            ${commonNav("Volver al Paso 1", "Destrabar vuelo", true, true)}
+          </div>
+        `;
+      }
+
+      if (pageIndex === 3){
+        html = `
+          <div class="paper ${flipClass}">
+            <div class="tag">✈️ Paso 3 • Vuelo</div>
+            <h2 class="title" style="margin-top:10px;">Ahora sí: el viaje 💘</h2>
+
+            <div class="pass">
+              <div class="passTop">
+                <strong>SÍNTESIS DEL VUELO</strong>
+                <span class="tag" style="background:rgba(255,255,255,.65)">Flybondi</span>
+              </div>
+
+              <div class="passGrid">
+                <div class="kv"><span>Ida</span><b>Buenos Aires (AEP) → Mendoza (MDZ)</b></div>
+                <div class="kv"><span>Salida</span><b>jue 12 mar 2026 • 19:45</b></div>
+                <div class="kv"><span>Llegada</span><b>jue 12 mar 2026 • 21:40</b></div>
+
+                <div class="kv"><span>Vuelta</span><b>Mendoza (MDZ) → Buenos Aires (AEP)</b></div>
+                <div class="kv"><span>Salida</span><b>dom 15 mar 2026 • 20:15</b></div>
+                <div class="kv"><span>Llegada</span><b>dom 15 mar 2026 • 21:55</b></div>
+
+                <div class="kv"><span>Equipaje incluido</span><b>1 objeto personal • 6 kg</b></div>
+                <div class="kv"><span>Medidas</span><b>20 × 40 × 30 cm</b></div>
+                <div class="kv"><span>Extra</span><b>Carry-on / bodega: no incluido</b></div>
+              </div>
+
+              <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:12px;">
+                <a class="link" href="./BA - MZ MER.pdf" download>⬇️ PDF (Ida)</a>
+                <a class="link" href="./MZ - BA MER.pdf" download>⬇️ PDF (Vuelta)</a>
+              </div>
+
+              <div class="valentineNote" style="margin-top:12px;">
+                🎁 Mensaje final:
+                <br/><b>Armá la mochila que el resto lo resuelvo yo😌</b>
+              </div>
+            </div>
+
+            ${commonNav("Volver al Paso 2", "Fin 💗", true, false)}
+          </div>
+        `;
+      }
+
+      els.page.innerHTML = html;
+
+      const btnPrev = document.getElementById("btnPrev");
+      const btnNext = document.getElementById("btnNext");
+      if (btnPrev) btnPrev.addEventListener("click", prev);
+      if (btnNext) btnNext.addEventListener("click", next);
+
+      if (pageIndex === 1){
+        startCarousel("raftingCarousel", RAFTING_IMAGES);
+        startCarousel("relaxCarousel", RELAX_IMAGES);
+      }
+    }
+
+    // Swipe navigation
+    let touchStartX = 0;
+    let touchStartY = 0;
+    let touching = false;
+
+    function onTouchStart(e){
+      if (!e.touches || !e.touches[0]) return;
+      touching = true;
+      touchStartX = e.touches[0].clientX;
+      touchStartY = e.touches[0].clientY;
+    }
+    function onTouchEnd(e){
+      if (!touching) return;
+      touching = false;
+      const t = (e.changedTouches && e.changedTouches[0]) ? e.changedTouches[0] : null;
+      if (!t) return;
+      const dx = t.clientX - touchStartX;
+      const dy = t.clientY - touchStartY;
+
+      if (Math.abs(dx) < 50 || Math.abs(dx) < Math.abs(dy)) return;
+
+      if (dx < 0) next(); else prev();
+    }
+
+    // Desktop pointer drag
+    let pointerDown = false;
+    let pStartX = 0, pStartY = 0;
+    function onPointerDown(e){
+      pointerDown = true;
+      pStartX = e.clientX;
+      pStartY = e.clientY;
+    }
+    function onPointerUp(e){
+      if (!pointerDown) return;
+      pointerDown = false;
+      const dx = e.clientX - pStartX;
+      const dy = e.clientY - pStartY;
+      if (Math.abs(dx) < 70 || Math.abs(dx) < Math.abs(dy)) return;
+      if (dx < 0) next(); else prev();
+    }
+
+    els.btnStart.addEventListener("click", ()=>{
+      unlockUpTo(1);
+      goTo(1);
+    });
+
+    els.btnReset.addEventListener("click", ()=>{
+      if (PERSIST_PROGRESS){
+        localStorage.removeItem("sv_page");
+        localStorage.removeItem("sv_unlocked");
+      }
+      currentPage = 0;
+      unlockedPage = 0;
+      goTo(0, {animate:false});
+    });
+
+    els.book.addEventListener("touchstart", onTouchStart, {passive:true});
+    els.book.addEventListener("touchend", onTouchEnd, {passive:true});
+    els.book.addEventListener("pointerdown", onPointerDown);
+    window.addEventListener("pointerup", onPointerUp);
+
+    // On load, keep unlocked >= current
+    unlockedPage = Math.max(unlockedPage, currentPage);
+    setState("sv_unlocked", unlockedPage);
+
+    goTo(currentPage, {animate:false});
+  </script>
 </body>
 </html>
